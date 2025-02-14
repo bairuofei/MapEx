@@ -257,7 +257,7 @@ class Mapper():
     def __init__(self, gt_map, lidar_sim_configs, use_distance_transform_for_planning=False, dt_floor_val=10):
         self.gt_map = gt_map
         self.accum_hit_points = np.zeros((0,2)).astype(int) # Keep track of the hit points that the agent has seen, this is what makes the map
-        self.obs_map = np.ones_like(gt_map) * 0.5 # Keep track of the map that the agent has seen
+        self.obs_map = np.ones_like(gt_map) * 0.5 # Keep track of the map that the agent has seen, initialize all values as 0.5
         self.lidar_sim_configs = lidar_sim_configs
         self.dilate_diam_for_planning = lidar_sim_configs['dilate_diam_for_planning']
         self.use_distance_transform_for_planning = use_distance_transform_for_planning

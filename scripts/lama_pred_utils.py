@@ -20,6 +20,7 @@ def convert_obsimg_to_model_input(obs_img, map_transform, device):
     # Transform the observed image, gets masks, move to device
     transformed = map_transform(image=obs_img, obs_img=obs_img)
     obs_img = np.transpose(transformed['obs_img'], (2, 0, 1))
+    # Find values between 0.49 and 0.51 to create mask
     mask = ((obs_img[0] > 0.49) & (obs_img[0] < 0.51)).astype(np.float32)[None, ...]
     input_batch = default_collate([{'image': obs_img, 'mask': mask}])
     input_batch = move_to_device(input_batch, device)
@@ -32,17 +33,17 @@ def load_lama_model(model_path, checkpoint_name='best.ckpt', device='cuda'):
         train_config = OmegaConf.create(yaml.safe_load(f))
     
     checkpoint_path = os.path.join(model_path, 'models', checkpoint_name)
-    train_config.training_model.predict_only = True
-    train_config.visualizer.kind = 'noop'
+    train_config.training_model.predict_only = True # Set to prediction mode
+    train_config.visualizer.kind = 'noop'  # No visualization
     
     model = load_checkpoint(train_config, checkpoint_path, strict=False, map_location=device).to(device)
-    model.freeze()
+    model.freeze() # Freeze the model only for prediction
     return model
 
 
 def visualize_prediction(batch_pred, mask):
     cur_gt = batch_pred['image'][0].permute(1, 2, 0).cpu().numpy()
-    cur_res = np.clip(batch_pred['inpainted'][0].permute(1, 2, 0).detach().cpu().numpy() * 255, 0, 255).astype('uint8')
+    cur_res = np.clip(batch_pred['inpainted'][0].permute(1, 2, 0).detach().cpu().numpy() * 255, 0, 255).astype('uint8')  # inpainted image
     cur_res = cv2.cvtColor(cur_res, cv2.COLOR_RGB2BGR)
     cur_gt = np.clip(cur_gt * 255, 0, 255).astype('uint8')
     cur_gt = cv2.cvtColor(cur_gt, cv2.COLOR_RGB2BGR)

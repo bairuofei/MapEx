@@ -174,7 +174,7 @@ def run_exploration_comparison_for_map(args):
     pred_vis_configs = args['pred_vis_configs']
     lidar_sim_configs = args['lidar_sim_configs']
     start_pose = args['start_pose']
-    modes_to_test = args['modes_to_test']
+    modes_to_test = args['modes_to_test']  # methods to compare with
     unknown_as_occ = args['unknown_as_occ']
     use_distance_transform_for_planning = args['use_distance_transform_for_planning']
     upen_config  = args['upen_config']
