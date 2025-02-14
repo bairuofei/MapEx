@@ -1,5 +1,5 @@
 # Evaluation runs
-root_path: '/home/seungchan/MapEx/' #customize this path
+root_path: '/home/ruofei/code/py/MapEx/' #customize this path
 num_data_per_world: 1
 
 test_world_only: false
@@ -10,10 +10,10 @@ output_folder_name: 'experiments'
 start_pose: [513,880]
 cur_pose_dist_threshold_m: 1
 
-modes_to_test: ['nearest', 'obsunk', 'onlyvar', 'visunk', 'visvar', 'visvarprob', 'upen', 'hectoraug'] #all methods
+# modes_to_test: ['nearest', 'obsunk', 'onlyvar', 'visunk', 'visvar', 'visvarprob', 'upen', 'hectoraug'] #all methods
 #modes_to_test: ['nearest', 'upen', 'hectoraug', 'visvarprob'] #MapEx vs baselines
 #modes_to_test: ['obsunk', 'onlyvar', 'visunk', 'visvar', 'visvarprob'] #ablations
-#modes_to_test: ['visvarprob'] #MapEx
+modes_to_test: ['visvarprob'] #MapEx
 
 unknown_as_occ: true
 use_distance_transform_for_planning: true 
@@ -38,7 +38,7 @@ pred_vis_configs:
   pixel_per_meter: 10
   num_laser: 250
 
-mission_time: 1000
+mission_time: 1000  # iterations for robot's movement
 
 show_plt_freq: 50
 

@@ -33,6 +33,7 @@ Clone the repository and make sure that you are on the main branch.
     git clone --recurse-submodules git@github.com:castacks/MapEx.git
     cd ~/MapEx
     git checkout main
+    # 自动更新当前git repo中嵌入的子module，即lama
     git submodule update --init --recursive
 
 ### Set up Mamba environment (Recommended)
@@ -41,11 +42,36 @@ Mamba is a package manger used for managing python environments and dependencies
     wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
     bash Mambaforge-Linux-x86_64.sh
 
+> 注意，现在推荐使用Miniforce来进行安装
+```
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+bash Miniforge3-Linux-x86_64.sh
+
+# 激活miniforce环境
+source ~/miniforge3/bin/activate
+
+
+# Miniforge 默认包含 mamba，所以你可以直接运行
+mamba --version
+
+# 解决安装包时采用严格的优先级问题
+conda config --set channel_priority flexible
+
+
+```
+
 Go to `lama` submodule folder, and create `lama` environment. 
 
     cd ~/MapEx/lama
     mamba env create -f conda_env.yml
     mamba activate lama
+
+### Install lib_rangec
+Go to `range_libc` directory and install by following:
+
+    cd ~/MapEx/lib_rangec/pywrapper
+    python3 setup.py install 
+    pip3 install Cython
 
 <!-- Install `torch` and relevant packages
 
@@ -79,12 +105,7 @@ The `pretrained_model` directory and its subdirectories should be organized as b
                     ├── models
                         ├── best.ckpt    
 
-### Install lib_rangec
-Go to `range_libc` directory and install by following:
 
-    cd ~/MapEx/lib_rangec/pywrapper
-    python3 setup.py install 
-    pip3 install Cython
 
 ### Install KTH toolbox dependencies for raycasting and observation model
 
@@ -97,6 +118,12 @@ Go to `range_libc` directory and install by following:
 In order to test MapEx, run the `explore.py` script. 
 
     cd scripts/
+    pip install "opencv-python<4.5"
+    pip install "albumentations<1.0.0"
+
+
+
+
     python3 explore.py
 
 This will automatically call `base.yaml`, which contains default parameters and specifies filepaths, environment, and starting conditions. If you want to customize parameters, generate your own yaml file and save it in the `configs` directory. 
